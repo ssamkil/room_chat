@@ -1,0 +1,202 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/css/styles.css') }}" />
+</head>
+<div id="container">
+	<aside>
+		<header>
+			<input type="text" placeholder="search">
+		</header>
+		<ul>
+			<li>
+				<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
+				<div>
+					<h2>Prénom Nom</h2>
+					<h3>
+						<span class="status orange"></span>
+						offline
+					</h3>
+				</div>
+			</li>
+			<li>
+				<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_02.jpg" alt="">
+				<div>
+					<h2>Prénom Nom</h2>
+					<h3>
+						<span class="status green"></span>
+						online
+					</h3>
+				</div>
+			</li>
+			<li>
+				<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_03.jpg" alt="">
+				<div>
+					<h2>Prénom Nom</h2>
+					<h3>
+						<span class="status orange"></span>
+						offline
+					</h3>
+				</div>
+			</li>
+			<li>
+				<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_04.jpg" alt="">
+				<div>
+					<h2>Prénom Nom</h2>
+					<h3>
+						<span class="status green"></span>
+						online
+					</h3>
+				</div>
+			</li>
+			<li>
+				<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_05.jpg" alt="">
+				<div>
+					<h2>Prénom Nom</h2>
+					<h3>
+						<span class="status orange"></span>
+						offline
+					</h3>
+				</div>
+			</li>
+			<li>
+				<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_06.jpg" alt="">
+				<div>
+					<h2>Prénom Nom</h2>
+					<h3>
+						<span class="status green"></span>
+						online
+					</h3>
+				</div>
+			</li>
+			<li>
+				<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_07.jpg" alt="">
+				<div>
+					<h2>Prénom Nom</h2>
+					<h3>
+						<span class="status green"></span>
+						online
+					</h3>
+				</div>
+			</li>
+			<li>
+				<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_08.jpg" alt="">
+				<div>
+					<h2>Prénom Nom</h2>
+					<h3>
+						<span class="status green"></span>
+						online
+					</h3>
+				</div>
+			</li>
+			<li>
+				<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_09.jpg" alt="">
+				<div>
+					<h2>Prénom Nom</h2>
+					<h3>
+						<span class="status green"></span>
+						online
+					</h3>
+				</div>
+			</li>
+			<li>
+				<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_10.jpg" alt="">
+				<div>
+					<h2>Prénom Nom</h2>
+					<h3>
+						<span class="status orange"></span>
+						offline
+					</h3>
+				</div>
+			</li>
+		</ul>
+	</aside>
+	<main>
+		<header>
+			<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
+			<div>
+				client_id is <h2 id="ws-id"></h2>
+				<h3>count of messages goes here</h3>
+			</div>
+			<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_star.png" alt="">
+		</header>
+		<ul id="chat">
+			<li class="you">
+				<div class="entete">
+					<span class="status green"></span>
+					<h2>Vincent</h2>
+					<h3>10:12AM, Today</h3>
+				</div>
+				<div class="triangle"></div>
+				<div class="message">
+					Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+				</div>
+			</li>
+			<li class="me">
+				<div class="entete">
+					<h3>10:12AM, Today</h3>
+					<h2>Vincent</h2>
+					<span class="status blue"></span>
+				</div>
+				<div class="triangle"></div>
+				<div class="message">
+					Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+				</div>
+			</li>
+			<li class="me">
+				<div class="entete">
+					<h3>10:12AM, Today</h3>
+					<h2>Vincent</h2>
+					<span class="status blue"></span>
+				</div>
+				<div class="triangle"></div>
+				<div class="message">
+					OK
+				</div>
+			</li>
+		</ul>
+		<footer>
+<!--			<textarea placeholder="Type your message"></textarea>-->
+<!--			<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_picture.png" alt="">-->
+<!--			<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_file.png" alt="">-->
+<!--			<a href="#">Send</a>-->
+            <form action="" onsubmit="sendMessage(event)">
+            <input type="text" id="messageText" placeholder="Type your message." autocomplete="off"/>
+            <button>Send</button>
+        </form>
+		</footer>
+	</main>
+	<script>
+		var client_id = Date.now()
+		document.querySelector("#ws-id").textContent = client_id;
+		var ws = new WebSocket(`ws://localhost:8000/ws/${client_id}`);
+		ws.onmessage = function(event) {
+			var messages = document.getElementById('chat')
+			var message = document.createElement('li')
+			var content = document.createTextNode(event.data)
+			var div1 = document.createElement('div')
+			var div2 = document.createElement('div')
+			var div3 = document.createElement('div')
+			var childEle1 = document.createElement('h3')
+			var childEle2 = document.createElement('h2')
+			var childEle3 = document.createElement('span')
+			message.append(div1, div2, div3)
+			div1.append(childEle1, childEle2, childEle3)
+			childEle1.append('current time comes here')
+			childEle2.append(client_id)
+			childEle3.classList = ('status green')
+			div1.classList.add('entete')
+			div2.classList.add('triangle')
+			div3.classList.add('message')
+			div3.appendChild(content)
+
+			message.classList.add('you')
+
+			messages.appendChild(message)
+		};
+		function sendMessage(event) {
+			var input = document.getElementById("messageText")
+			ws.send(input.value)
+			input.value = ''
+			event.preventDefault()
+		}
+	</script>
+</div>
