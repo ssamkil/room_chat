@@ -9,7 +9,7 @@
 			<form class="login">
 				<div class="login__field">
 					<i class="login__icon fas fa-user"></i>
-					<input type="text" class="login__input" id="username" placeholder="User name" value="userRandom">
+					<input type="text" class="login__input" id="username" placeholder="User name" value="newuser">
 				</div>
 				<div class="login__field">
 					<i class="login__icon fas fa-lock"></i>
@@ -42,6 +42,7 @@
 	</div>
 	<script>
 		var username = $('#username').val();
+		var roomname = 'newroom'
 		var password = document.getElementById('password')
 
 		function signInForm() {
@@ -50,8 +51,8 @@
 				return false
 			}
 			console.log(username)
-			location.href = '/test/' + username
-			var ws = new WebSocket(`ws://localhost:8000/ws/${username}`);
+			location.href = '/' + roomname + '/' + username
+			var ws = new WebSocket(`ws://localhost:8000/ws/${roomname}`);
 		}
 
 	</script>

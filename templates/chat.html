@@ -168,12 +168,13 @@
 	</main>
 	<script>
 		val = $(location).attr('pathname')
+		roomname = val.split('/')[1]
 		username = val.split('/')[2]
 		var time = new Date();
 		var hour = time.getHours();
 		var minute = time.getMinutes();
 		document.querySelector("#username").textContent = username;
-		var ws = new WebSocket(`ws://localhost:8000/ws/1`);
+		var ws = new WebSocket(`ws://localhost:8000/ws/` + roomname);
 		ws.onmessage = function(event) {
 			var messages = document.getElementById('chat')
 			var message = document.createElement('li')

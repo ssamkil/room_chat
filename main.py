@@ -2,6 +2,7 @@ import json
 from fastapi import FastAPI, Request, Response, WebSocket, WebSocketDisconnect
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from collections import defaultdict
 
 app = FastAPI()
 
@@ -11,7 +12,7 @@ templates = Jinja2Templates(directory="templates")
 
 class ConnectionManager:
     def __init__(self):
-        self.active_connections: dict = {}
+        self.active_connections: dict = defaultdict(dict)
         self.generator = self.get_notification_generator()
 
     async def get_notification_generator(self):
@@ -19,13 +20,13 @@ class ConnectionManager:
             message = yield
             msg = message["message"]
             room_name = message["room_name"]
-            await self._notify(msg, room_name)
+            await self.send_personal_message(msg, room_name)
 
     async def connect(self, websocket: WebSocket, room_name: str):
         await websocket.accept()
-        if self.active_connections[room_name] == {}:
+        if self.active_connections[room_name] == {} or len(self.active_connections[room_name]) == 0:
             self.active_connections[room_name] = []
-        self.active_connections.append(websocket)
+        self.active_connections[room_name].append(websocket)
         print(f'CONNECTIONS: {self.active_connections[room_name]}')
 
     async def push(self, msg: str, room_name: str = None):
@@ -38,7 +39,7 @@ class ConnectionManager:
             return None
 
     def disconnect(self, websocket: WebSocket, room_name: str):
-        self.active_connections.remove(websocket)
+        self.active_connections[room_name].remove(websocket)
         print(f'CONNECTION REMOVED\nREMAINING CONNECTIONS: {self.active_connections[room_name]}')
 
     async def send_personal_message(self, message: str, room_name: str):
@@ -61,7 +62,7 @@ manager = ConnectionManager()
 async def get(request: Request):
     return templates.TemplateResponse('index.html', {'request': request})
 
-@app.get("/test")
+@app.get("/{room_name}/{user_name}")
 async def get(request: Request, room_name: str, user_name: str):
     return templates.TemplateResponse('chat.html', {'request': request, 'room_name': room_name, 'user_name': user_name})
 
@@ -71,8 +72,11 @@ async def websocket_endpoint(websocket: WebSocket, room_name: str):
     try:
         while True:
             data = await websocket.receive_text()
-            d = json.loads(data)
-            d['room_name'] = room_name
+            # print(type(data))
+            # print(data)
+            # d = json.loads(data)
+            # d['room_name'] = room_name
+            print(manager.get_members('newroom'))
 
             room_members = (
                 manager.get_members(room_name)
