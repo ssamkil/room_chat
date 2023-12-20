@@ -1,5 +1,7 @@
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/css/styles.css') }}" />
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 </head>
 <div class="container">
 	<div class="screen">
@@ -7,17 +9,17 @@
 			<form class="login">
 				<div class="login__field">
 					<i class="login__icon fas fa-user"></i>
-					<input type="text" class="login__input" placeholder="User name / Email">
+					<input type="text" class="login__input" id="username" placeholder="User name" value="userRandom">
 				</div>
 				<div class="login__field">
 					<i class="login__icon fas fa-lock"></i>
-					<input type="password" class="login__input" placeholder="Password">
+					<input type="password" class="login__input" id="password" placeholder="Password">
 				</div>
-				<button class="button login__submit">
+				<button type="button" class="button login__submit" id="signin" onclick="signInForm()">
 					<span class="button__text">Log In</span>
 					<i class="button__icon fas fa-chevron-right"></i>
 				</button>
-                <button class="button login__submit">
+                <button class="button login__submit" id="signup">
 					<span class="button__text">Sign Up</span>
 					<i class="button__icon fas fa-chevron-right"></i>
 				</button>
@@ -38,4 +40,19 @@
 			<span class="screen__background__shape screen__background__shape1"></span>
 		</div>
 	</div>
+	<script>
+		var username = $('#username').val();
+		var password = document.getElementById('password')
+
+		function signInForm() {
+			if(username == ('' || undefined)) {
+				console.log('no value')
+				return false
+			}
+			console.log(username)
+			location.href = '/test/' + username
+			var ws = new WebSocket(`ws://localhost:8000/ws/${username}`);
+		}
+
+	</script>
 </div>

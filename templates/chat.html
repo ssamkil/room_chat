@@ -1,5 +1,7 @@
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/css/styles.css') }}" />
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 </head>
 <div id="container">
 	<aside>
@@ -113,7 +115,7 @@
 		<header>
 			<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
 			<div>
-				client_id is <h2 id="ws-id"></h2>
+				Username: <h2 id="username"></h2>
 				<h3>count of messages goes here</h3>
 			</div>
 			<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_star.png" alt="">
@@ -165,9 +167,13 @@
 		</footer>
 	</main>
 	<script>
-		var client_id = Date.now()
-		document.querySelector("#ws-id").textContent = client_id;
-		var ws = new WebSocket(`ws://localhost:8000/ws/${client_id}`);
+		val = $(location).attr('pathname')
+		username = val.split('/')[2]
+		var time = new Date();
+		var hour = time.getHours();
+		var minute = time.getMinutes();
+		document.querySelector("#username").textContent = username;
+		var ws = new WebSocket(`ws://localhost:8000/ws/1`);
 		ws.onmessage = function(event) {
 			var messages = document.getElementById('chat')
 			var message = document.createElement('li')
@@ -180,8 +186,15 @@
 			var childEle3 = document.createElement('span')
 			message.append(div1, div2, div3)
 			div1.append(childEle1, childEle2, childEle3)
-			childEle1.append('current time comes here')
-			childEle2.append(client_id)
+			var day_or_night
+			if (hour > 12) {
+				hour = hour - 12
+				day_or_night = 'PM'
+			} else {
+				day_or_night = 'AM'
+			}
+			childEle1.append(hour + ':' + minute + day_or_night)
+			childEle2.append('\u00a0' + username)
 			childEle3.classList = ('status green')
 			div1.classList.add('entete')
 			div2.classList.add('triangle')
