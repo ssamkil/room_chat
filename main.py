@@ -66,6 +66,10 @@ async def get(request: Request):
 async def get(request: Request, room_name: str, user_name: str):
     return templates.TemplateResponse('chat.html', {'request': request, 'room_name': room_name, 'user_name': user_name})
 
+@app.get("/test")
+async def get(request: Request):
+    return templates.TemplateResponse('test.html', {'request': request})
+
 @app.websocket("/ws/{room_name}")
 async def websocket_endpoint(websocket: WebSocket, room_name: str):
     await manager.connect(websocket, room_name)

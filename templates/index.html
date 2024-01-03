@@ -9,13 +9,13 @@
 			<form class="login">
 				<div class="login__field">
 					<i class="login__icon fas fa-user"></i>
-					<input type="text" class="login__input" id="username" placeholder="User name" value="newuser">
+					<input type="text" class="login__input" id="username" placeholder="User name">
 				</div>
 				<div class="login__field">
 					<i class="login__icon fas fa-lock"></i>
 					<input type="password" class="login__input" id="password" placeholder="Password">
 				</div>
-				<button type="button" class="button login__submit" id="signin" onclick="signInForm()">
+				<button type="button" class="button login__submit" id="signin">
 					<span class="button__text">Log In</span>
 					<i class="button__icon fas fa-chevron-right"></i>
 				</button>
@@ -41,19 +41,21 @@
 		</div>
 	</div>
 	<script>
-		var username = $('#username').val();
-		var roomname = 'newroom'
-		var password = document.getElementById('password')
+		// let username = $('#username').val();
+		//let password = $('#password').val();
+		let roomname = 'newroom';
 
-		function signInForm() {
+		$(document).on('click', '#signin', function(){
+			let username = $('#username').val();
+			let password = $('#password').val();
 			if(username == ('' || undefined)) {
-				console.log('no value')
-				return false
+				console.log('no value');
+				return false;
 			}
-			console.log(username)
-			location.href = '/' + roomname + '/' + username
+			//location.href = `/${roomname}/${username}`;
+			location.href = `/test`;
 			var ws = new WebSocket(`ws://localhost:8000/ws/${roomname}`);
-		}
+		})
 
 	</script>
 </div>
