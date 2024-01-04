@@ -19,7 +19,7 @@
 					<span class="button__text">Log In</span>
 					<i class="button__icon fas fa-chevron-right"></i>
 				</button>
-                <button class="button login__submit" id="signup">
+                <button type="button" class="button login__submit" id="signup">
 					<span class="button__text">Sign Up</span>
 					<i class="button__icon fas fa-chevron-right"></i>
 				</button>
@@ -52,10 +52,12 @@
 				console.log('no value');
 				return false;
 			}
-			//location.href = `/${roomname}/${username}`;
-			location.href = `/test`;
-			var ws = new WebSocket(`ws://localhost:8000/ws/${roomname}`);
+
+			location.href = `/${username}`;
 		})
 
+		$(document).on('click', '#signup', function(){
+
+		})
 	</script>
 </div>

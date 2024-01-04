@@ -3,16 +3,22 @@
     <head>
         <title>Chat</title>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/css/styles.css') }}" />
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     </head>
     <body>
         <form id="submit_room_name">
             <input type="text" style="width: 250px" id="room_name" placeholder="type in the room name you wish to join">
-            <button class="btn waves-effect waves-light send-button" type="submit" name="action">
-                <i class="material-icons right">send</i>
+            <button class="btn waves-effect waves-light send-button" type="button" id="submit_room">
+                <i class="material-icons right">Join</i>
             </button>
         </form>
     </body>
     <script>
-
+        $(document).on('click', '#submit_room', function() {
+            var roomname = $('#room_name').val();
+            var val = $(location).attr('pathname')
+		    var username = val.split('/')[1]
+            location.href = `/${username}/${roomname}`;
+        })
     </script>
 </html>

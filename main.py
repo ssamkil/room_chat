@@ -62,13 +62,13 @@ manager = ConnectionManager()
 async def get(request: Request):
     return templates.TemplateResponse('index.html', {'request': request})
 
-@app.get("/{room_name}/{user_name}")
+@app.get("/{user_name}/{room_name}")
 async def get(request: Request, room_name: str, user_name: str):
     return templates.TemplateResponse('chat.html', {'request': request, 'room_name': room_name, 'user_name': user_name})
 
-@app.get("/test")
-async def get(request: Request):
-    return templates.TemplateResponse('test.html', {'request': request})
+@app.get("/{user_name}")
+async def get(request: Request, user_name: str):
+    return templates.TemplateResponse('test.html', {'request': request, 'user_name': user_name})
 
 @app.websocket("/ws/{room_name}")
 async def websocket_endpoint(websocket: WebSocket, room_name: str):
@@ -76,11 +76,11 @@ async def websocket_endpoint(websocket: WebSocket, room_name: str):
     try:
         while True:
             data = await websocket.receive_text()
-            # print(type(data))
-            # print(data)
+            print(type(data))
+            print(data)
             # d = json.loads(data)
             # d['room_name'] = room_name
-            print(manager.get_members('newroom'))
+            print(f"CURRENT MEMBERS IN ROOM: {manager.get_members(room_name)}")
 
             room_members = (
                 manager.get_members(room_name)
